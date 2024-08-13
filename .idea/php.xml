@@ -141,6 +141,10 @@
       <path value="$PROJECT_DIR$/vendor/react/dns" />
       <path value="$PROJECT_DIR$/vendor/evenement/evenement" />
       <path value="$PROJECT_DIR$/vendor/friendsofphp/php-cs-fixer" />
+      <path value="$PROJECT_DIR$/vendor/gedmo/doctrine-extensions" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/common" />
+      <path value="$PROJECT_DIR$/vendor/stof/doctrine-extensions-bundle" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
@@ -225,8 +229,8 @@
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
-    <option name="config" value="\\wsl$\Ubuntu-22.04\home\kolaj\code\4.4_Ads\phpstan.dist.neon" />
-    <option name="level" value="6" />
+    <option name="config" value="/var/www/html/phpstan.dist.neon" />
+    <option name="level" value="8" />
     <option name="transferred" value="true" />
   </component>
   <component name="PhpUnit">
