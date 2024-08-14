@@ -3,59 +3,44 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Factory\AdFactory;
+use App\Factory\CommentFactory;
+use App\Factory\UserFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
+use function Zenstruck\Foundry\Persistence\flush_after;
 
 class AppFixtures extends Fixture
 {
-    private ObjectManager $manager;
-
-    public function __construct(
-        private readonly UserPasswordHasherInterface $hasher,
-    ) {
-    }
-
     public function load(ObjectManager $manager): void
     {
-        $this->manager = $manager;
-        $users = $this->loadUsers();
-
-        $this->manager->flush();
+        flush_after($this->createUsers(...));
+        flush_after($this->createAds(...));
+        flush_after($this->createComments(...));
     }
 
-    /**
-     * @return User[]
-     */
-    private function loadUsers(): array
+    private function createUsers(): void
     {
-        $firstUser = new User();
-        $firstUser
-            ->setEmail('user@example.com')
-            ->setName('Paul Cook')
-            ->setPhone('+123456789')
-            ->setPassword($this->hasher->hashPassword($firstUser, 'Password123'))
-            ->setRoles([User::ROLE_USER]);
-        $this->manager->persist($firstUser);
+        UserFactory::createSequence([
+            ['email' => 'user@example.com', 'name' => 'Paul Cook'],
+            ['email' => 'hacker@example.com', 'name' => 'Kate Libby'],
+            ['email' => 'admin@example.com', 'name' => 'Dade Murphy', 'roles' => [User::ROLE_ADMIN]],
+        ]);
+    }
 
-        $secondUser = new User();
-        $secondUser
-            ->setEmail('hacker@example.com')
-            ->setName('Kate Libby')
-            ->setPhone('+888888888')
-            ->setPassword($this->hasher->hashPassword($secondUser, 'Password123'))
-            ->setRoles([User::ROLE_USER]);
-        $this->manager->persist($secondUser);
+    private function createAds(): void
+    {
+        $users = UserFactory::all();
+        AdFactory::createMany(100, fn () => ['user' => $users[array_rand($users)]]);
+    }
 
-        $adminUser = new User();
-        $adminUser
-            ->setEmail('admin@example.com')
-            ->setName('Dade Murphy')
-            ->setPhone('+99999999')
-            ->setPassword($this->hasher->hashPassword($adminUser, 'Password123'))
-            ->setRoles([User::ROLE_ADMIN]);
-        $this->manager->persist($adminUser);
-
-        return [$firstUser, $secondUser, $adminUser];
+    private function createComments(): void
+    {
+        $users = UserFactory::all();
+        $ads = AdFactory::all();
+        CommentFactory::createMany(
+            500,
+            fn () => ['user' => $users[array_rand($users)], 'ad' => $ads[array_rand($ads)]]);
     }
 }
