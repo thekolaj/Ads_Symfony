@@ -1,7 +1,7 @@
-framework:
-    validation:
-        auto_mapping:
-            App\Entity\: []
+#framework:
+#    validation:
+#        auto_mapping:
+#            App\Entity\: []
 
 when@test:
     framework:

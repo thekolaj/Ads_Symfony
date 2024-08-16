@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
 class Ad
@@ -20,17 +21,22 @@ class Ad
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private string $title;
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 5, max: 255)]
+    private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    private string $description;
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 20, max: 4999)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Assert\Range(min: 0, max: 99999999.99)]
+    private ?string $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'ads')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user;
-
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private string $price = '0';
 
     /**
      * @var Collection<int, Comment>
@@ -53,7 +59,7 @@ class Ad
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(?string $title): static
     {
         $this->title = $title;
 
@@ -65,7 +71,7 @@ class Ad
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -77,21 +83,21 @@ class Ad
         return $this->user;
     }
 
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    public function getPrice(): string
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(string $price): static
+    public function setPrice(?string $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
