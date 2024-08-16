@@ -10,10 +10,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -36,11 +38,22 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Ads', 'fa-brands fa-adversal', Ad::class);
         yield MenuItem::linkToCrud('Comments', 'fas fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
+        // TODO       yield MenuItem::linkToUrl('Homepage', 'fas fa-home', $this->generateUrl('homepage'));
     }
 
     public function configureActions(): Actions
     {
         return parent::configureActions()
-            ->add(Crud::PAGE_INDEX, Action::DETAIL);
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->disable(Action::NEW)
+        ;
     }
+    //  TODO
+    //    public function configureUserMenu(UserInterface $user): UserMenu
+    //    {
+    //        return parent::configureUserMenu($user)
+    //            ->addMenuItems([
+    //                MenuItem::linkToUrl('My Profile', 'fas fa-user', $this->generateUrl('profile')),
+    //            ]);
+    //    }
 }

@@ -125,4 +125,9 @@ class Ad
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return 'Ad#'.$this->id;
+    }
 }
