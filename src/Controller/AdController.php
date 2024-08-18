@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\User;
 use App\Form\AdType;
 use App\Repository\AdRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/ad', name: 'ad_')]
 class AdController extends AbstractController
@@ -23,9 +26,10 @@ class AdController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
         $ad = new Ad();
+        $ad->setUser($user);
         $form = $this->createForm(AdType::class, $ad);
         $form->handleRequest($request);
 
@@ -51,6 +55,7 @@ class AdController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[IsGranted('CAN_UPDATE', 'ad')]
     public function edit(Request $request, Ad $ad, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AdType::class, $ad);
@@ -69,6 +74,7 @@ class AdController extends AbstractController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    #[IsGranted('CAN_UPDATE', 'ad')]
     public function delete(Request $request, Ad $ad, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$ad->getId(), $request->getPayload()->getString('_token'))) {

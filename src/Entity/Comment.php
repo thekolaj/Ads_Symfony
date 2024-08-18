@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interface\HasUserInterface;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
-class Comment
+class Comment implements HasUserInterface
 {
     use TimestampableEntity;
 

@@ -6,6 +6,7 @@
         <cache>
           <versions>
             <info id="Local\\wsl$\Ubuntu-22.04\home\kolaj\code\4.4_Ads\vendor\autoload.php" version="9.6.20" />
+            <info id="interpreter-0082ecc8-05cf-4afc-9a21-369ffb9e7542" version="9.6.20" />
           </versions>
         </cache>
       </tool>

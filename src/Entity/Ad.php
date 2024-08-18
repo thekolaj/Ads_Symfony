@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Interface\HasUserInterface;
 use App\Repository\AdRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AdRepository::class)]
-class Ad
+class Ad implements HasUserInterface
 {
     use TimestampableEntity;
 
@@ -134,6 +135,6 @@ class Ad
 
     public function __toString(): string
     {
-        return 'Ad#'.$this->id;
+        return 'Ad-'.$this->id;
     }
 }
