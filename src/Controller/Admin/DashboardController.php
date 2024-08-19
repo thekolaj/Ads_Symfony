@@ -39,7 +39,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Ads', 'fa-brands fa-adversal', Ad::class);
         yield MenuItem::linkToCrud('Comments', 'fas fa-comment', Comment::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-users', User::class);
-        // TODO       yield MenuItem::linkToUrl('Homepage', 'fas fa-home', $this->generateUrl('homepage'));
+        yield MenuItem::linkToUrl('Homepage', 'fas fa-home', $this->generateUrl('index'));
     }
 
     public function configureActions(): Actions
@@ -49,12 +49,12 @@ class DashboardController extends AbstractDashboardController
             ->disable(Action::NEW)
         ;
     }
-    //  TODO
-    //    public function configureUserMenu(UserInterface $user): UserMenu
-    //    {
-    //        return parent::configureUserMenu($user)
-    //            ->addMenuItems([
-    //                MenuItem::linkToUrl('My Profile', 'fas fa-user', $this->generateUrl('profile')),
-    //            ]);
-    //    }
+
+    public function configureUserMenu(UserInterface $user): UserMenu
+    {
+        return parent::configureUserMenu($user)
+            ->addMenuItems([
+                MenuItem::linkToUrl('My Profile', 'fas fa-user', $this->generateUrl('profile')),
+            ]);
+    }
 }

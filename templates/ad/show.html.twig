@@ -8,10 +8,6 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ ad.id }}</td>
-            </tr>
-            <tr>
                 <th>Title</th>
                 <td>{{ ad.title }}</td>
             </tr>
@@ -24,11 +20,11 @@
                 <td>{{ ad.price }}</td>
             </tr>
             <tr>
-                <th>CreatedAt</th>
+                <th>Created at</th>
                 <td>{{ ad.createdAt ? ad.createdAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>UpdatedAt</th>
+                <th>Updated at</th>
                 <td>{{ ad.updatedAt ? ad.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>

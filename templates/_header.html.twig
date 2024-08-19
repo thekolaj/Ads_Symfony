@@ -1,0 +1,35 @@
+{% set route = app.request.get('_route') %}
+<nav class="d-flex justify-content-between my-3">
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link {{ route ==  'index' ? "active" }}" href="{{ path('index') }}">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ route ==  'ad_new' ? "active" }}" href="{{ path('ad_new') }}">New Ad</a>
+        </li>
+        {% if app.user %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('admin') }}">Admin</a>
+                </li>
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link {{ route ==  'profile' ? "active" }}" href="{{ path('profile') }}">
+                    {{ app.user.userIdentifier }}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('logout') }}">Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link {{ route ==  'register' ? "active" }}" href="{{ path('register') }}">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ route ==  'login' ? "active" }}" href="{{ path('login') }}">Login</a>
+            </li>
+        {% endif %}
+    </ul>
+    <button class="btn btn-secondary " id="btnSwitch">Dark Mode</button>
+</nav>
+<hr/>

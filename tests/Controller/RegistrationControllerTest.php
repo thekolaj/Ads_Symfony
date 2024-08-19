@@ -19,7 +19,7 @@ class RegistrationControllerTest extends WebTestCase
         $this->userRepository = $repository;
     }
 
-    public function testRegister(): void
+    public function testRegisterSucceeds(): void
     {
         $this->client->request('GET', '/register');
         self::assertResponseIsSuccessful();
@@ -38,5 +38,6 @@ class RegistrationControllerTest extends WebTestCase
         $user = $this->userRepository->findOneBy(['email' => 'newuser@example.com']);
         self::assertSame('Test User', $user->getName());
         self::assertSame('+999999999', $user->getPhone());
+        self::assertTrue(password_verify('Password123', $user->getPassword()));
     }
 }

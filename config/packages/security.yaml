@@ -22,6 +22,9 @@ security:
             logout:
                 path: logout
                 target: index
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
