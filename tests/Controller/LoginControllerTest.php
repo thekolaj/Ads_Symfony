@@ -19,7 +19,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Log In', [
             '_username' => 'user@example.com',
             '_password' => 'Password123',
         ]);
@@ -36,7 +36,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Log In', [
             '_username' => 'doesNotExist@example.com',
             '_password' => 'password',
         ]);
@@ -51,7 +51,7 @@ class LoginControllerTest extends WebTestCase
         $this->client->request('GET', '/login');
         self::assertResponseIsSuccessful();
 
-        $this->client->submitForm('Sign in', [
+        $this->client->submitForm('Log In', [
             '_username' => 'user@example.com',
             '_password' => 'bad-password',
         ]);
@@ -61,5 +61,24 @@ class LoginControllerTest extends WebTestCase
         self::assertSelectorTextContains('.alert-danger', 'Invalid credentials.');
     }
 
-    // TODO Test Logout
+    public function testLogout(): void
+    {
+        $this->client->request('GET', '/login');
+        self::assertResponseIsSuccessful();
+
+        $this->client->submitForm('Log In', [
+            '_username' => 'user@example.com',
+            '_password' => 'Password123',
+        ]);
+
+        $this->client->request('GET', '/ad/new');
+        self::assertResponseIsSuccessful();
+        self::assertPageTitleContains('New Ad');
+
+        $this->client->request('GET', '/logout');
+        self::assertResponseRedirects('/');
+
+        $this->client->request('GET', '/ad/new');
+        self::assertResponseRedirects('/login');
+    }
 }

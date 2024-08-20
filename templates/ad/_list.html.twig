@@ -1,0 +1,34 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ad in ads %}
+        <tr>
+            <td>
+                <a href="{{ path('ad_show', {'id': ad.id}) }}" class="link-body-emphasis">{{ ad.title }}</a>
+            </td>
+            <td>{{ ad.price }}</td>
+            <td class="text-secondary-emphasis text-center small">{{ ad.createdAt|date('Y-m-d H:i:s') }}</td>
+            <td class="text-secondary-emphasis text-center small">{{ ad.updatedAt|date('Y-m-d H:i:s') }}</td>
+            <td>
+                {% if is_granted('CAN_UPDATE', ad) %}
+                    <a href="{{ path('ad_edit', {'id': ad.id}) }}" class="btn btn-success btn-sm w-100">Edit</a>
+                    {{ include('ad/_delete_form.html.twig') }}
+                {% endif %}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+

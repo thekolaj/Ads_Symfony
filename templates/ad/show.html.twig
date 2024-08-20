@@ -4,35 +4,35 @@
 
 {% block body %}
     <h1>Ad</h1>
-
+    {% if is_granted('CAN_UPDATE', ad) %}
+        <div class="d-flex justify-content-end">
+            <a href="{{ path('ad_edit', {'id': ad.id}) }}" class="btn btn-success btn-sm me-2">Edit</a>
+            {{ include('ad/_delete_form.html.twig') }}
+        </div>
+    {% endif %}
     <table class="table">
         <tbody>
-            <tr>
-                <th>Title</th>
-                <td>{{ ad.title }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ ad.description }}</td>
-            </tr>
-            <tr>
-                <th>Price</th>
-                <td>{{ ad.price }}</td>
-            </tr>
-            <tr>
-                <th>Created at</th>
-                <td>{{ ad.createdAt ? ad.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated at</th>
-                <td>{{ ad.updatedAt ? ad.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ ad.title }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ ad.description }}</td>
+        </tr>
+        <tr>
+            <th>Price</th>
+            <td>{{ ad.price }}</td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ ad.createdAt|date('Y-m-d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ ad.updatedAt|date('Y-m-d H:i:s') }}</td>
+        </tr>
         </tbody>
     </table>
-
-    <a href="{{ path('index') }}">back to list</a>
-
-    <a href="{{ path('ad_edit', {'id': ad.id}) }}">edit</a>
-
-    {{ include('ad/_delete_form.html.twig') }}
+    {{ include('comment/_list.html.twig') }}
 {% endblock %}

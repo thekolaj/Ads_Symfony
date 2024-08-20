@@ -21,4 +21,6 @@
         </tr>
         </tbody>
     </table>
+    <h2>Your Ad list</h2>
+    {{ include('ad/_list.html.twig', {'ads': app.user.ads}) }}
 {% endblock %}
