@@ -12,7 +12,7 @@ class AdType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
+            ->add('title', options: ['attr' => ['autofocus' => true]])
             ->add('description')
             ->add('price')
         ;

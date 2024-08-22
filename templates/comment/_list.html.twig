@@ -2,7 +2,7 @@
     <h2>Comments</h2>
     <a href="{{ path('comment_new', {'id': ad.id}) }}" class="btn btn-success ms-auto h2">New Comment</a>
 </div>
-{% for comment in ad.comments %}
+{% for comment in comments %}
     <div class="card m-5">
         <div class="card-header d-flex">
             <div>By: {{ comment.user }}</div>

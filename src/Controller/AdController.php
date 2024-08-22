@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use App\Entity\User;
 use App\Form\AdType;
 use App\Repository\AdRepository;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,7 @@ class AdController extends AbstractController
     public function index(AdRepository $adRepository): Response
     {
         return $this->render('ad/index.html.twig', [
-            'ads' => $adRepository->findAll(),
+            'ads' => $adRepository->findList(),
         ]);
     }
 
@@ -37,7 +38,7 @@ class AdController extends AbstractController
             $entityManager->persist($ad);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ad_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('ad_show', ['id' => $ad->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ad/new.html.twig', [
@@ -47,10 +48,13 @@ class AdController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Ad $ad): Response
+    public function show(int $id, AdRepository $adRepository, CommentRepository $commentRepository): Response
     {
+        $ad = $adRepository->findOneById($id);
+
         return $this->render('ad/show.html.twig', [
             'ad' => $ad,
+            'comments' => $commentRepository->findByAd($ad),
         ]);
     }
 
@@ -64,7 +68,7 @@ class AdController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('ad_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('ad_show', ['id' => $ad->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('ad/edit.html.twig', [

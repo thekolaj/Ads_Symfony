@@ -2,3 +2,4 @@
     {{ form_widget(form) }}
 <button class="btn btn-success btn-sm mt-1">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+<a href="{{ path('ad_show', {'id': comment.ad.id}) }}" class="btn btn-info btn-sm mt-3">Back</a>

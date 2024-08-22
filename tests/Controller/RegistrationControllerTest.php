@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -14,7 +15,6 @@ class RegistrationControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        /** @var UserRepository $repository */
         $repository = static::getContainer()->get(UserRepository::class);
         $this->userRepository = $repository;
     }
@@ -36,8 +36,9 @@ class RegistrationControllerTest extends WebTestCase
         self::assertResponseRedirects('/');
         self::assertCount(4, $this->userRepository->findAll());
         $user = $this->userRepository->findOneBy(['email' => 'newuser@example.com']);
+        self::assertTrue($user instanceof User);
         self::assertSame('Test User', $user->getName());
         self::assertSame('+999999999', $user->getPhone());
-        self::assertTrue(password_verify('Password123', $user->getPassword()));
+        self::assertTrue(password_verify('Password123', (string) $user->getPassword()));
     }
 }

@@ -34,5 +34,20 @@
         </tr>
         </tbody>
     </table>
+    <h2>Contacts</h2>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <td>{{ ad.user.name }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ ad.user.email }}</td>
+        </tr>
+        <tr>
+            <th>Phone</th>
+            <td>{{ ad.user.phone }}</td>
+        </tr>
+    </table>
     {{ include('comment/_list.html.twig') }}
 {% endblock %}

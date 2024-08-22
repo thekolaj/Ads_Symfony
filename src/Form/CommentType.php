@@ -11,7 +11,7 @@ class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('text');
+        $builder->add('text', options: ['attr' => ['autofocus' => true]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
