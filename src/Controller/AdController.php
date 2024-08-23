@@ -19,15 +19,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class AdController extends AbstractController
 {
     #[Route('/', name: 'index', methods: ['GET'])]
-    public function index(AdRepository $adRepository): Response
+    public function index(Request $request, AdRepository $adRepository): Response
     {
         return $this->render('ad/index.html.twig', [
-            'ads' => $adRepository->findList(),
+            'pager' => $adRepository->listOrderedPaginated((int) $request->query->get('page', '1')),
         ]);
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(#[CurrentUser] User $user, Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, #[CurrentUser] User $user, EntityManagerInterface $entityManager): Response
     {
         $ad = new Ad();
         $ad->setUser($user);
@@ -48,13 +48,14 @@ class AdController extends AbstractController
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(int $id, AdRepository $adRepository, CommentRepository $commentRepository): Response
+    public function show(Request $request, int $id, AdRepository $adRepository, CommentRepository $commentRepository): Response
     {
         $ad = $adRepository->findOneById($id);
+        $comments = $commentRepository->listByAdOrderedPaginated($ad, (int) $request->query->get('page', '1'));
 
         return $this->render('ad/show.html.twig', [
             'ad' => $ad,
-            'comments' => $commentRepository->findByAd($ad),
+            'comments' => $comments,
         ]);
     }
 

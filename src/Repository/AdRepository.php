@@ -6,6 +6,8 @@ use App\Entity\Ad;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -13,15 +15,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class AdRepository extends ServiceEntityRepository
 {
+    public const PER_PAGE = 20;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Ad::class);
     }
 
     /**
-     * @return Ad[] Returns an array of Ads
+     * @return Pagerfanta<Ad>
      */
-    public function findList(?User $user = null): array
+    public function listOrderedPaginated(int $currentPage, int $maxPerPage = self::PER_PAGE, ?User $user = null): Pagerfanta
     {
         $qb = $this->createQueryBuilder('a')->orderBy('a.updatedAt', 'DESC');
 
@@ -29,7 +33,10 @@ class AdRepository extends ServiceEntityRepository
             $qb->andWhere('a.user = :user')->setParameter('user', $user);
         }
 
-        return $qb->getQuery()->getResult();
+        /** @var Pagerfanta<Ad> $pager */
+        $pager = Pagerfanta::createForCurrentPageWithMaxPerPage(new QueryAdapter($qb), $currentPage, $maxPerPage);
+
+        return $pager;
     }
 
     public function findOneById(int $id): Ad

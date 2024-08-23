@@ -23,5 +23,8 @@
         </div>
     </div>
 {% else %}
-    <p>No comments found for this Ad</p>
+    <p class="text-center">No comments found for this Ad</p>
 {% endfor %}
+{% if comments.haveToPaginate %}
+    <div class="d-flex justify-content-center m-3">{{ pagerfanta(comments) }}</div>
+{% endif %}

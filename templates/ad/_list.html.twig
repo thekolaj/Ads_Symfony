@@ -9,7 +9,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for ad in ads %}
+    {% for ad in pager %}
         <tr>
             <td>
                 <a href="{{ path('ad_show', {'id': ad.id}) }}" class="link-body-emphasis">{{ ad.title }}</a>
@@ -31,4 +31,5 @@
     {% endfor %}
     </tbody>
 </table>
+<div class="d-flex justify-content-center m-3">{{ pagerfanta(pager) }}</div>
 

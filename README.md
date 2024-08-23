@@ -76,9 +76,16 @@ With 3 extra extension and some configuration it now is working as intended.
 
 ### Pagination
 
+Pagination for Ad list and Comments.
+Handled by `Pagerfanta`. It paginates queries, adds Twig widget and even has bootstrap template.
+
 ### Created/updateAt
 
+Used a `doctrine-extensions-bundle` which has a handy trait that handles them both.
+
 ### Reusable forms and Data validation
+
+Form templates are reused between create and edit actions. Data is validated mostly by attributes on the entities.
 
 ## What was left out / possible improvements
 
