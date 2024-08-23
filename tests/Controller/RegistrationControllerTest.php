@@ -15,8 +15,7 @@ class RegistrationControllerTest extends WebTestCase
     protected function setUp(): void
     {
         $this->client = static::createClient();
-        $repository = static::getContainer()->get(UserRepository::class);
-        $this->userRepository = $repository;
+        $this->userRepository = static::getContainer()->get(UserRepository::class);
     }
 
     public function testRegisterSucceeds(): void
