@@ -2,135 +2,84 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Ad;
 use App\Entity\Comment;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\User;
+use App\Repository\AdRepository;
+use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CommentControllerTest extends WebTestCase
 {
-    //    private KernelBrowser $client;
-    //    private EntityManagerInterface $manager;
-    //    private EntityRepository $repository;
-    //    private string $path = '/comment/';
+    private KernelBrowser $client;
+    private AdRepository $adRepository;
+    private UserRepository $userRepository;
+    private CommentRepository $commentRepository;
 
-    //    protected function setUp(): void
-    //    {
-    //        $this->client = static::createClient();
-    //        $this->manager = static::getContainer()->get('doctrine')->getManager();
-    //        $this->repository = $this->manager->getRepository(Comment::class);
-    //
-    //        foreach ($this->repository->findAll() as $object) {
-    //            $this->manager->remove($object);
-    //        }
-    //
-    //        $this->manager->flush();
-    //    }
-    //
-    //    public function testIndex(): void
-    //    {
-    //        $crawler = $this->client->request('GET', $this->path);
-    //
-    //        self::assertResponseStatusCodeSame(200);
-    //        self::assertPageTitleContains('Comment index');
-    //
-    //        // Use the $crawler to perform additional assertions e.g.
-    //        // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
-    //    }
-    //
-    //    public function testNew(): void
-    //    {
-    //        $this->markTestIncomplete();
-    //        $this->client->request('GET', sprintf('%snew', $this->path));
-    //
-    //        self::assertResponseStatusCodeSame(200);
-    //
-    //        $this->client->submitForm('Save', [
-    //            'comment[text]' => 'Testing',
-    //            'comment[createdAt]' => 'Testing',
-    //            'comment[updatedAt]' => 'Testing',
-    //            'comment[user]' => 'Testing',
-    //            'comment[ad]' => 'Testing',
-    //        ]);
-    //
-    //        self::assertResponseRedirects($this->path);
-    //
-    //        self::assertSame(1, $this->repository->count([]));
-    //    }
-    //
-    //    public function testShow(): void
-    //    {
-    //        $this->markTestIncomplete();
-    //        $fixture = new Comment();
-    //        $fixture->setText('My Title');
-    //        $fixture->setCreatedAt('My Title');
-    //        $fixture->setUpdatedAt('My Title');
-    //        $fixture->setUser('My Title');
-    //        $fixture->setAd('My Title');
-    //
-    //        $this->manager->persist($fixture);
-    //        $this->manager->flush();
-    //
-    //        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-    //
-    //        self::assertResponseStatusCodeSame(200);
-    //        self::assertPageTitleContains('Comment');
-    //
-    //        // Use assertions to check that the properties are properly displayed.
-    //    }
-    //
-    //    public function testEdit(): void
-    //    {
-    //        $this->markTestIncomplete();
-    //        $fixture = new Comment();
-    //        $fixture->setText('Value');
-    //        $fixture->setCreatedAt('Value');
-    //        $fixture->setUpdatedAt('Value');
-    //        $fixture->setUser('Value');
-    //        $fixture->setAd('Value');
-    //
-    //        $this->manager->persist($fixture);
-    //        $this->manager->flush();
-    //
-    //        $this->client->request('GET', sprintf('%s%s/edit', $this->path, $fixture->getId()));
-    //
-    //        $this->client->submitForm('Update', [
-    //            'comment[text]' => 'Something New',
-    //            'comment[createdAt]' => 'Something New',
-    //            'comment[updatedAt]' => 'Something New',
-    //            'comment[user]' => 'Something New',
-    //            'comment[ad]' => 'Something New',
-    //        ]);
-    //
-    //        self::assertResponseRedirects('/comment/');
-    //
-    //        $fixture = $this->repository->findAll();
-    //
-    //        self::assertSame('Something New', $fixture[0]->getText());
-    //        self::assertSame('Something New', $fixture[0]->getCreatedAt());
-    //        self::assertSame('Something New', $fixture[0]->getUpdatedAt());
-    //        self::assertSame('Something New', $fixture[0]->getUser());
-    //        self::assertSame('Something New', $fixture[0]->getAd());
-    //    }
-    //
-    //    public function testRemove(): void
-    //    {
-    //        $this->markTestIncomplete();
-    //        $fixture = new Comment();
-    //        $fixture->setText('Value');
-    //        $fixture->setCreatedAt('Value');
-    //        $fixture->setUpdatedAt('Value');
-    //        $fixture->setUser('Value');
-    //        $fixture->setAd('Value');
-    //
-    //        $this->manager->persist($fixture);
-    //        $this->manager->flush();
-    //
-    //        $this->client->request('GET', sprintf('%s%s', $this->path, $fixture->getId()));
-    //        $this->client->submitForm('Delete');
-    //
-    //        self::assertResponseRedirects('/comment/');
-    //        self::assertSame(0, $this->repository->count([]));
-    //    }
+    protected function setUp(): void
+    {
+        $this->client = static::createClient();
+        $this->adRepository = static::getContainer()->get(AdRepository::class);
+        $this->userRepository = static::getContainer()->get(UserRepository::class);
+        $this->commentRepository = static::getContainer()->get(CommentRepository::class);
+    }
+
+    public function testNew(): void
+    {
+        $ad = $this->adRepository->findOneBy([]);
+        self::assertTrue($ad instanceof Ad);
+        $commentCount = $this->commentRepository->count(['ad' => $ad]);
+        $user = $this->userRepository->findOneBy(['email' => 'user@example.com']);
+        self::assertTrue($user instanceof User);
+        $this->client->loginUser($user);
+
+        $this->client->request('GET', '/ad/'.$ad->getId().'/new-comment');
+        self::assertResponseIsSuccessful();
+
+        $this->client->submitForm('Save', ['comment[text]' => 'Testing']);
+
+        self::assertResponseRedirects('/ad/'.$ad->getId());
+
+        self::assertSame($commentCount + 1, $this->commentRepository->count(['ad' => $ad]));
+        $newComment = $this->commentRepository->findOneBy(['text' => 'Testing']);
+        self::assertInstanceOf(Comment::class, $newComment);
+        self::assertSame($ad->getId(), $newComment->getAd()?->getId());
+        self::assertSame($user->getId(), $newComment->getUser()?->getId());
+    }
+
+    public function testEdit(): void
+    {
+        $comment = $this->commentRepository->findOneBy([]);
+        self::assertTrue($comment instanceof Comment);
+        self::assertTrue($comment->getUser() instanceof User);
+        self::assertTrue($comment->getAd() instanceof Ad);
+        $this->client->loginUser($comment->getUser());
+
+        $this->client->request('GET', '/comment/'.$comment->getId().'/edit');
+        $this->client->submitForm('Update', ['comment[text]' => 'Something New']);
+
+        self::assertResponseRedirects('/ad/'.$comment->getAd()->getId());
+
+        $updatedComment = $this->commentRepository->find($comment->getId());
+        self::assertInstanceOf(Comment::class, $updatedComment);
+        self::assertSame('Something New', $updatedComment->getText());
+    }
+
+    public function testRemove(): void
+    {
+        $commentCount = $this->commentRepository->count();
+        $comment = $this->commentRepository->findOneBy([]);
+        self::assertTrue($comment instanceof Comment);
+        self::assertTrue($comment->getUser() instanceof User);
+        $this->client->loginUser($comment->getUser());
+
+        $this->client->request('GET', '/comment/'.$comment->getId().'/edit');
+        $this->client->submitForm('Delete');
+
+        self::assertResponseRedirects('/ad/'.$comment->getAd()?->getId());
+        self::assertSame($commentCount - 1, $this->commentRepository->count());
+        self::assertNull($this->commentRepository->find($comment->getId()));
+    }
 }

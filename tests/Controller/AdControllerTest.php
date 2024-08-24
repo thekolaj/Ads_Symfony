@@ -47,10 +47,11 @@ class AdControllerTest extends WebTestCase
             'ad[price]' => '999',
         ]);
 
+        self::assertSame($adCount + 1, $this->adRepository->count());
         $newAd = $this->adRepository->findOneBy(['title' => 'Testing']);
         self::assertTrue($newAd instanceof Ad);
         self::assertResponseRedirects('/ad/'.$newAd->getId());
-        self::assertSame($adCount + 1, $this->adRepository->count());
+
         self::assertSame($user->getId(), $newAd->getUser()?->getId());
         self::assertSame('Testing Testing Testing', $newAd->getDescription());
         self::assertSame('999.00', $newAd->getPrice());
@@ -104,5 +105,6 @@ class AdControllerTest extends WebTestCase
 
         self::assertResponseRedirects('/ad/');
         self::assertSame($adCount - 1, $this->adRepository->count());
+        self::assertNull($this->adRepository->find($ad->getId()));
     }
 }

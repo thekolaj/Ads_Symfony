@@ -56,12 +56,12 @@ Simple functional test that use preloaded data from fixtures.
 
 Some basic happy path Functional test for every system, just to practice their creation.
 Was not aiming for 100% code coverage or testing for edge cases to save time.
-Big part of testing was creating and loading data for them.
+Big part of testing was creating and loading data.
 
 ### Auth system
 
 User registration, login, logout, and remember me functionality. A user can edit/delete his own ads/comments. 
-Admin can edit/delete every ad.
+Admin can edit/delete every ad/comment.
 
 Managed to implement all the functionality I wanted with just one Voter and an interface.
 
@@ -72,12 +72,12 @@ Code is formated with `php-cs-fixer` and passes `phpstan` analysis on level: max
 Took quite a bit of time to set everything up.
 Set up `php-cs-fixer` to run on save in PHP Storm from the Docker container.
 `phpstan` does not come with good Symfony/Doctrine support out to the box.
-With 3 extra extension and some configuration it now is working as intended.
+With 3 extra extensions and some configuration it now is working as intended.
 
 ### Pagination
 
 Pagination for Ad list and Comments.
-Handled by `Pagerfanta`. It paginates queries, adds Twig widget and even has bootstrap template.
+Handled by `Pagerfanta`. It paginates queries, adds Twig widget and even has a bootstrap template.
 
 ### Created/updateAt
 
