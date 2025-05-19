@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="LaravelPint">
+    <laravel_pint_settings>
+      <laravel_pint_by_interpreter asDefaultInterpreter="true" interpreter_id="68e2f672-a0a9-4bd7-8b60-846fa568edd6">
+        <option name="timeout" value="30000" />
+      </laravel_pint_by_interpreter>
+    </laravel_pint_settings>
+  </component>
   <component name="MessDetectorOptionsConfiguration">
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCSFixerOptionsConfiguration">
-    <option name="codingStandard" value="Symfony" />
+    <option name="codingStandard" value="Custom" />
+    <option name="rulesetPath" value="$PROJECT_DIR$/.php-cs-fixer.dist.php" />
     <option name="transferred" value="true" />
   </component>
   <component name="PHPCodeSnifferOptionsConfiguration">
@@ -14,7 +22,14 @@
   <component name="PhpCSFixer">
     <phpcsfixer_settings>
       <phpcs_fixer_by_interpreter interpreter_id="0082ecc8-05cf-4afc-9a21-369ffb9e7542" standards="DoctrineAnnotation;PER;PER-CS;PER-CS1.0;PER-CS2.0;PHP54Migration;PHP56Migration;PHP70Migration;PHP71Migration;PHP73Migration;PHP74Migration;PHP80Migration;PHP81Migration;PHP82Migration;PHP83Migration;PHP84Migration;PHPUnit100Migration;PHPUnit30Migration;PHPUnit32Migration;PHPUnit35Migration;PHPUnit43Migration;PHPUnit48Migration;PHPUnit50Migration;PHPUnit52Migration;PHPUnit54Migration;PHPUnit55Migration;PHPUnit56Migration;PHPUnit57Migration;PHPUnit60Migration;PHPUnit75Migration;PHPUnit84Migration;PHPUnit91Migration;PSR1;PSR12;PSR2;PhpCsFixer;Symfony" tool_path="/var/www/html/vendor/bin/php-cs-fixer" timeout="60000" />
+      <PhpCSFixerConfiguration tool_path="$PROJECT_DIR$/vendor/bin/php-cs-fixer" />
+      <phpcs_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="1a368680-5e81-4962-a955-eb17664699f2" standards="PSR1;PSR2;Symfony;DoctrineAnnotation;PHP70Migration;PHP71Migration" tool_path="/home/nikolaj.simonov/code/projects/Ads_Symfony/vendor/bin/php-cs-fixer" timeout="30000" />
     </phpcsfixer_settings>
+  </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="68e2f672-a0a9-4bd7-8b60-846fa568edd6" timeout="30000" />
+    </phpcs_settings>
   </component>
   <component name="PhpExternalFormatter">
     <option name="externalFormatter" value="PHP_CS_FIXER" />
@@ -242,10 +257,11 @@
     <PhpStan_settings>
       <PhpStanConfiguration tool_path="$PROJECT_DIR$/vendor/bin/phpstan" />
       <phpstan_by_interpreter interpreter_id="0082ecc8-05cf-4afc-9a21-369ffb9e7542" tool_path="/var/www/html/vendor/bin/phpstan" timeout="60000" />
+      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="68e2f672-a0a9-4bd7-8b60-846fa568edd6" tool_path="$PROJECT_DIR$/vendor/bin/phpstan" timeout="60000" />
     </PhpStan_settings>
   </component>
   <component name="PhpStanOptionsConfiguration">
-    <option name="config" value="/var/www/html/phpstan.dist.neon" />
+    <option name="config" value="$PROJECT_DIR$/phpstan.dist.neon" />
     <option name="level" value="8" />
     <option name="transferred" value="true" />
   </component>
@@ -253,6 +269,11 @@
     <phpunit_settings>
       <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/vendor/autoload.php" phpunit_phar_path="" use_configuration_file="true" />
     </phpunit_settings>
+  </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="68e2f672-a0a9-4bd7-8b60-846fa568edd6" timeout="60000" />
+    </Psalm_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />

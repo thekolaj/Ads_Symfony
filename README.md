@@ -9,6 +9,12 @@ Just run `docker compose up`. Database will be created and fixtures loaded with 
 - Main page: http://localhost:8080/index.php
 - Admin area: http://localhost:8080/index.php/admin
 
+```bash
+composer lint; # Check code with both PHP-CS-Fixer and PHPStan, does not change code.
+composer fix;  # Run PHP-CS-Fixer on all files. Changes code.
+composer test; # Run unit tests
+```
+
 ## Sample users
 
 - normal: `user@example.com` / `Password123`
