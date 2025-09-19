@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var list<string> The user roles
+     * @var string[] The user roles
      */
     #[ORM\Column]
     #[Assert\Unique]
@@ -87,11 +87,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        if (null === $this->email || '' === $this->email) {
+            throw new \LogicException('User email must not be null or empty');
+        }
+
+        return $this->email;
     }
 
     /**
-     * @return list<string>
+     * @return string[]
      */
     public function getRoles(): array
     {
@@ -102,7 +106,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param list<string> $roles
+     * @param string[] $roles
      */
     public function setRoles(array $roles): static
     {

@@ -22,7 +22,10 @@ final class UserFactory extends PersistentProxyObjectFactory
         return User::class;
     }
 
-    protected function defaults(): array|callable
+    /**
+     * @return array<string, mixed>
+     */
+    protected function defaults(): array
     {
         return [
             'email' => self::faker()->unique()->safeEmail(),

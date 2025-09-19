@@ -37,10 +37,6 @@ class UpdateVoter extends Voter
             return true;
         }
 
-        if (!$subject instanceof HasUserInterface) {
-            throw new \InvalidArgumentException('Subject must be instance of HasUserInterface');
-        }
-
         return $user === $subject->getUser();
     }
 }

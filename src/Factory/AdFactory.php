@@ -15,7 +15,10 @@ final class AdFactory extends PersistentProxyObjectFactory
         return Ad::class;
     }
 
-    protected function defaults(): array|callable
+    /**
+     * @return array<string, mixed>
+     */
+    protected function defaults(): array
     {
         return [
             'title' => self::faker()->realTextBetween(20, 255),

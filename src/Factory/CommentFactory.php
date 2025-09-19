@@ -15,7 +15,10 @@ final class CommentFactory extends PersistentProxyObjectFactory
         return Comment::class;
     }
 
-    protected function defaults(): array|callable
+    /**
+     * @return array<string, mixed>
+     */
+    protected function defaults(): array
     {
         return [
             'text' => self::faker()->realTextBetween(5, 300),
