@@ -9,6 +9,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
+/**
+ * @extends AbstractCrudController<Comment>
+ */
 class CommentCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
